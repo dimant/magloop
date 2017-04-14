@@ -5,6 +5,7 @@
 
 
 // bluetooth android example http://solderer.tv/data-transfer-between-android-and-arduino-via-bluetooth/
+// android graphs https://github.com/appsthatmatter/GraphView
 
 const int stepsPerRevolution = 200;  // steps per revolution
 const Stepper stepper(stepsPerRevolution, 8, 9, 10, 11);
