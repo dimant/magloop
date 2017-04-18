@@ -15,18 +15,22 @@ int switchPosB = 3;
 int pushButtonL = 4;
 int pushButtonR = 5;
 
+int i = 0;
 
 // the setup function runs once when you press reset or power the board
 void setup() {
+//  Serial.begin(9600); 
   DDSsetup();
-  SWRsetup();
+//  delay(10);
+//  DDSsetFreq(1000);
+//  SWRsetup();
   
   // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(switchPosA, INPUT_PULLUP);  
-  pinMode(switchPosB, INPUT_PULLUP);  
-  pinMode(pushButtonL, INPUT_PULLUP);  
-  pinMode(pushButtonR, INPUT_PULLUP);
+//  pinMode(LED_BUILTIN, OUTPUT);
+//  pinMode(switchPosA, INPUT_PULLUP);  
+//  pinMode(switchPosB, INPUT_PULLUP);  
+//  pinMode(pushButtonL, INPUT_PULLUP);  
+//  pinMode(pushButtonR, INPUT_PULLUP);
 }
 
 int speed()
@@ -41,7 +45,6 @@ int speed()
 
 void loop() 
 {
-  stepper.setSpeed(60);
-
-  stepper.step(stepsPerRevolution);
+  DDSsetFreq(1000);
+  delay(1000);
 }
