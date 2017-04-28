@@ -1,50 +1,39 @@
 #include <Stepper.h>
 
-#include "ddsmodule.h"
-#include "swrmeter.h"
-
-
-// bluetooth android example http://solderer.tv/data-transfer-between-android-and-arduino-via-bluetooth/
 // android graphs https://github.com/appsthatmatter/GraphView
 
+// 20000 steps -> 1 revolution
+// 
 const int stepsPerRevolution = 200;  // steps per revolution
 const Stepper stepper(stepsPerRevolution, 8, 9, 10, 11);
 
-int switchPosA = 2;
-int switchPosB = 3;
-int pushButtonL = 4;
-int pushButtonR = 5;
-
-int i = 0;
-
 // the setup function runs once when you press reset or power the board
 void setup() {
-//  Serial.begin(9600); 
-  DDSsetup();
-//  delay(10);
-//  DDSsetFreq(1000);
-//  SWRsetup();
-  
-  // initialize digital pin LED_BUILTIN as an output.
-//  pinMode(LED_BUILTIN, OUTPUT);
-//  pinMode(switchPosA, INPUT_PULLUP);  
-//  pinMode(switchPosB, INPUT_PULLUP);  
-//  pinMode(pushButtonL, INPUT_PULLUP);  
-//  pinMode(pushButtonR, INPUT_PULLUP);
+  Serial.begin(9600);
+  Serial.println("[INITIALIZED]");
 }
 
-int speed()
+void rotateStepper(int rpm, int steps) 
 {
-  if(digitalRead(switchPosA) == LOW && digitalRead(switchPosB) == HIGH)
-    return 1;
-  else if(digitalRead(switchPosA) == HIGH && digitalRead(switchPosB) == HIGH)
-    return 2;
-  else if(digitalRead(switchPosA) == HIGH && digitalRead(switchPosB) == LOW)
-    return 3;
+  Serial.print("[ROTATE] ");Serial.print(rpm);Serial.print(' ');Serial.println(steps);
+  stepper.setSpeed(rpm);
+  stepper.step(steps);
 }
 
 void loop() 
 {
-  DDSsetFreq(1000);
-  delay(1000);
+  int cmd;
+  int rpm;
+  int steps;
+
+  // see if there's incoming serial data:
+  if (Serial.available() > 0) {    
+    delay(5);
+    String line = Serial.readStringUntil('\n');    
+    sscanf(line.c_str(),"%d,%d,%d\r\n",&cmd, &rpm, &steps);
+    
+    if(cmd == 0) {
+      rotateStepper(rpm, steps);
+    }
+  }
 }
